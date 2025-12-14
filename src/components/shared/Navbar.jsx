@@ -43,17 +43,17 @@ export default function Navbar() {
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
                             >
-                                Chamados
+                                Médicos
                             </Link>
                             <ul className="dropdown-menu">
                                 <li>
-                                    <Link className="dropdown-item" to="/chamados">
-                                        Lista de Chamados
+                                    <Link className="dropdown-item" to="/medico">
+                                        Lista de médicos
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link className="dropdown-item" to="/chamados/create">
-                                        Criar Chamado
+                                    <Link className="dropdown-item" to="/medico/create">
+                                        Criar um médico
                                     </Link>
                                 </li>
                             </ul>

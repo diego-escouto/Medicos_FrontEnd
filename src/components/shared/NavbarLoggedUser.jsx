@@ -45,12 +45,12 @@ const NavbarLoggedUser = () => {
 
                 <ul className="dropdown-menu dropdown-menu-end">
                     <li>
-                        <Link className="dropdown-item text-center" type="button" to="/usuarios/login">
+                        <Link className="dropdown-item text-center" type="button" to="/cliente/login">
                             Entrar
                         </Link>
                     </li>
                     <li>
-                        <Link className="dropdown-item text-center" type="button" to="/usuarios/register">
+                        <Link className="dropdown-item text-center" type="button" to="/cliente">
                             Registrar
                         </Link>
                     </li>
