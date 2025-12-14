@@ -7,7 +7,7 @@ export default function Navbar() {
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
                 {/* 1) Brand - fica sempre à esquerda */}
-                <Link className="navbar-brand" to="/">
+                <Link className="border border rounded m-2 p-2 navbar-brand" to="/">
                     Home
                 </Link>
 

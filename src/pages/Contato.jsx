@@ -4,6 +4,7 @@ const Contato = () => {
     return (
         <div>
             <Navbar />
+            <h1>Contato</h1>
         </div>
     )
 }
