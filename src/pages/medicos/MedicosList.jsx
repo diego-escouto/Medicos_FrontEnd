@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useAuthFetch } from "../../auth/useAuthFetch";
-import Toast from "../../components/shared/Toast";
 import { Nav } from "react-bootstrap";
-import Navbar from "../../components/shared/Navbar";
 import { Link } from "react-router-dom";
-import MedicoDelete from "../../medicos/MedicoDelete";
+import { useAuthFetch } from "@/auth/useAuthFetch";
+import Toast from "@/components/shared/Toast";
+import Navbar from "@/components/shared/Navbar";
+import MedicoDelete from "@/components/medicos/MedicoDelete";
 
 // Pega a API_BASE_URL da variável de ambiente
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -101,4 +101,3 @@ const MedicosList = () => {
 };
 
 export default MedicosList;
-

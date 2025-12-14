@@ -10,8 +10,8 @@ import Contato from './pages/Contato.jsx';
 
 import UsuariosLogin from './pages/usuarios/UsuariosLogin.jsx';
 import UsuariosRegister from './pages/usuarios/UsuariosRegister.jsx';
+import MedicoEdit from './components/medicos/MedicoEdit.jsx';
 import MedicosList from './pages/medicos/MedicosList.jsx';
-import MedicoEdit from './medicos/MedicoEdit.jsx';
 import MedicoCreate from './pages/medicos/MedicoCreate.jsx';
 
 import "bootstrap/dist/css/bootstrap.min.css"

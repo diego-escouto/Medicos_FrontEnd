@@ -20,6 +20,9 @@ import { defineConfig } from "vite";
 // Ele é responsável por entender JSX/TSX, fazer transformações, HMR etc.
 import react from "@vitejs/plugin-react-swc";
 
+// Módulo 'path' do Node.js para resolver caminhos de arquivos.
+import path from "path";
+
 // -----------------------------------------------------------------------------
 // DEFINIÇÃO DA CONTENT SECURITY POLICY (CSP) PARA PRODUÇÃO/PREVIEW
 // -----------------------------------------------------------------------------
@@ -65,6 +68,17 @@ export default defineConfig({
     base: "/",
     // Plugins que o Vite deve usar; aqui só estamos usando o plugin do React.
     plugins: [react()],
+
+    // ---------------------------------------------------------------------------
+    // CONFIGURAÇÃO DE ALIASES DE CAMINHO
+    // ---------------------------------------------------------------------------
+    // Permite usar '@' como um atalho para a pasta 'src'.
+    // Ex: import Component from '@/components/Component'
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, './src'),
+        },
+    },
 
     // ---------------------------------------------------------------------------
     // CONFIGURAÇÃO DO SERVIDOR DE DESENVOLVIMENTO (npm run dev)
