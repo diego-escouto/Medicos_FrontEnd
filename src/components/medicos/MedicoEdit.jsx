@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuthFetch } from "../auth/useAuthFetch";
-import Toast from "../components/shared/Toast";
+import { useAuthFetch } from "../../auth/useAuthFetch";
+import Toast from "../shared/Toast";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
