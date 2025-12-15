@@ -18,11 +18,13 @@ const NavbarLoggedUser = () => {
                 method: 'POST',
                 credentials: "include"
             });
+        } catch (error) {
+            console.log('Logout request failed:', error);
+        } finally {
+            // Sempre limpa a sessão localmente, mesmo que o backend falhe
             sessionStorage.removeItem("at");
             setUser(null);
             navigate("/");
-        } catch (error) {
-            console.log(error);
         }
     }
 
