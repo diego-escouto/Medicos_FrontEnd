@@ -64,7 +64,7 @@ export default function MedicoClinicasPanel({ medico, authFetch, API_BASE_URL, o
 												</>
 											) : (
 												<button
-													className="btn btn-sm btn-outline-secondary"
+													className="btn btn-sm btn-outline-primary"
 													onClick={(e) => {
 														e.stopPropagation();
 														setEditingClinicaId(c.id);
