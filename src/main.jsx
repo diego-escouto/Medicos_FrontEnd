@@ -28,14 +28,12 @@ const router = createHashRouter([
     { path: "/", element: <App /> },
     { path: "/sobre", element: <Sobre /> },
     { path: "/contato", element: <Contato /> },
-    
+
 
 
     { path: "/medico", element: <MedicosList /> },
     { path: "/medico/:id/edit", element: <MedicoEdit /> },
     { path: "/medico/create", element: <MedicoCreate /> },
-    // { path: "/clinica/:id/edit", element: <ClinicaEdit /> },
-
     { path: "/cliente/login", element: <UsuariosLogin /> },
     { path: "/cliente", element: <UsuariosRegister /> },
 ]);
