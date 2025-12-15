@@ -9,11 +9,11 @@ import App from './pages/App.jsx'
 import Sobre from './pages/Sobre.jsx'
 import Contato from './pages/Contato.jsx';
 
-// Usuários
+//  Páginas de Usuários
 import UsuariosLogin from './pages/usuarios/UsuariosLogin.jsx';
 import UsuariosRegister from './pages/usuarios/UsuariosRegister.jsx';
 
-// Médicos
+// Páginas de Médicos
 import MedicosList from './pages/medicos/MedicosList.jsx';
 import MedicoCreate from './pages/medicos/MedicoCreate.jsx';
 import MedicoEdit from './components/medicos/MedicoEdit.jsx';
