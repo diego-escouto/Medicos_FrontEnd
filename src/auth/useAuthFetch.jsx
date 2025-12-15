@@ -37,7 +37,7 @@ const useAuthFetch = () => {
                 ...restOptions,
                 signal,
                 // se quiser que SEMPRE envie cookies, pode descomentar:
-                 credentials: "include",
+                //  credentials: "include",
             };
 
             // 1ª tentativa de requisição

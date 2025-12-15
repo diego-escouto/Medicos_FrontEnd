@@ -117,79 +117,11 @@ const AuthProvider = ({ children }) => {
                     }
                 }
 
-                // -----------------------------------------------------------------
-                // 2) Não existe access_token válido → tentar usar refresh_token
-                // -----------------------------------------------------------------
-                //
-                // Neste ponto, ou:
-                //  - Não havia token na sessionStorage
-                //  - Ou havia, mas expirou / era inválido
-                //
-                // O refresh_token NÃO fica disponível em JavaScript; ele é um cookie
-                // com flag HttpOnly, então só o backend tem acesso a ele.
-                //
-                // O que fazemos aqui é chamar o endpoint /api/usuarios/refresh.
-                // Se o refresh_token estiver OK, o backend responde com um novo
-                // access_token (JWT) que podemos guardar e usar no front.
-                try {
-                    const res = await fetch(
-                        `${API_BASE_URL}/api/usuarios/refresh`,
-                        {
-                            method: "POST",
-                            // credentials: "include" é FUNDAMENTAL aqui:
-                            // diz ao navegador para enviar cookies (incluindo o
-                            // refresh_token HttpOnly) junto com a requisição.
-                            credentials: "include",
-                        }
-                    );
-
-                    // Se o backend retornar erro (ex.: 401, 403, 500), significa que:
-                    //  - o refresh_token expirou,
-                    //  - foi revogado,
-                    //  - ou não está presente.
-                    // Nesse caso, consideramos que não há mais sessão válida.
-                    if (!res.ok) {
-                        sessionStorage.removeItem("at");
-                        setUser(null);
-                        return;
-                    }
-
-                    // Tentamos ler a resposta JSON (pode lançar erro se não for JSON)
-                    const data = await res.json().catch(() => ({}));
-
-                    // Esperamos que o backend envie { access_token: "..." }
-                    const newToken = data?.access_token;
-
-                    // Se não veio access_token, não temos como autenticar o usuário.
-                    if (!newToken) {
-                        sessionStorage.removeItem("at");
-                        setUser(null);
-                        return;
-                    }
-
-                    // Salvamos o novo access_token na sessionStorage,
-                    // assim as próximas recargas de página podem tentar usá-lo direto.
-                    sessionStorage.setItem("at", newToken);
-
-                    // Agora decodificamos o novo token para preencher o estado "user".
-                    try {
-                        const decoded = jwtDecode(newToken);
-                        setUser(decoded); // Usuário autenticado com sucesso
-                    } catch (err) {
-                        // Se, por algum motivo, o JWT retornado for inválido,
-                        // registramos o erro e consideramos que não há sessão.
-                        console.error(
-                            "Falha ao decodificar token vindo do /refresh:",
-                            err
-                        );
-                        setUser(null);
-                    }
-                } catch (err) {
-                    // Qualquer erro de rede (sem internet, backend fora do ar, etc.)
-                    // também faz com que a sessão seja considerada inválida.
-                    console.error("Erro ao chamar /api/usuarios/refresh:", err);
-                    setUser(null);
-                }
+                // Não há implementação de refresh token no backend atual.
+                // Para evitar 404s e falhas no bootstrap, não tentamos o refresh
+                // automaticamente aqui — a aplicação considerará o usuário
+                // desconectado se não houver um access_token válido.
+                setUser(null);
             } finally {
                 // -----------------------------------------------------------------
                 // Final do boot de autenticação

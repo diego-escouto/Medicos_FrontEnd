@@ -27,7 +27,6 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Toast from "../shared/Toast";
 import { useAuth } from "../../auth/useAuth";
-import ReCaptcha from "../shared/ReCaptcha";
 
 // Pega a API_BASE_URL da variável de ambiente
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -42,7 +41,6 @@ const UsuariosFormRegister = () => {
     const [senha, setSenha] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const [captchaToken, setCaptchaToken] = useState(null); // token do reCAPTCHA
 
     // Hook do React Router para navegar após o sucesso.
     const navigate = useNavigate();
@@ -55,11 +53,6 @@ const UsuariosFormRegister = () => {
         e.preventDefault();     // impede recarregar a página
         setError("");           // limpa erro anterior (se houver)
 
-        // Se o usuário não marcou o reCAPTCHA, bloqueia o submit
-        if (!captchaToken) {
-            setError("Por favor, confirme o reCAPTCHA antes de registrar.");
-            return;
-        }
 
         setLoading(true);       // ativa spinner/botão desabilitado
 
@@ -108,8 +101,6 @@ const UsuariosFormRegister = () => {
 
             // (Opcional) limpa a senha do estado
             setSenha("");
-            // (Opcional) limpa o reCAPTCHA
-            setCaptchaToken(null);
 
             // Redireciona para a página inicial (ou para "/chamados", se preferir)
             navigate("/");
@@ -177,17 +168,11 @@ const UsuariosFormRegister = () => {
                     />
                 </div>
 
-                {/* reCAPTCHA do Google */}
-                <div className="my-2">
-                    <ReCaptcha setCaptchaToken={setCaptchaToken} loading={loading} />
-                </div>
-
-                {/* Botão desabilita enquanto loading=true
-                    e também se o reCAPTCHA não estiver marcado */}
+                {/* Botão desabilita enquanto loading=true */}
                 <button
                     type="submit"
                     className="btn btn-primary"
-                    disabled={loading || !captchaToken}
+                    disabled={loading}
                 >
                     {loading ? "Registrando…" : "Registrar"}
                 </button>

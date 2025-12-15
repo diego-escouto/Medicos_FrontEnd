@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Toast from "../shared/Toast";
 import { useAuth } from "../../auth/useAuth";
-import ReCaptcha from "../shared/ReCaptcha";
 
 // Pega a API_BASE_URL da variável de ambiente
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -25,7 +24,7 @@ const UsuariosFormLogin = () => {
     const [senha, setSenha] = useState("");        // valor do campo "Senha"
     const [loading, setLoading] = useState(false); // indica requisição em andamento
     const [error, setError] = useState("");        // mensagem exibida no toast
-    const [captchaToken, setCaptchaToken] = useState(null); // token do reCAPTCHA
+    
 
     const navigate = useNavigate();                // para redirecionar após login
     const { setUser } = useAuth();                 // atualiza o usuário no contexto
@@ -33,12 +32,6 @@ const UsuariosFormLogin = () => {
     const handleSubmit = async (e) => {
         e.preventDefault(); // evita recarregar a página
         setError("");       // limpa erro anterior (se houver)
-
-        // Se o usuário não marcou o reCAPTCHA, bloqueia o submit
-        if (!captchaToken) {
-            setError("Por favor, confirme o reCAPTCHA antes de entrar.");
-            return;
-        }
 
         setLoading(true);   // desabilita botão/mostra "Entrando…"
 
@@ -82,8 +75,6 @@ const UsuariosFormLogin = () => {
 
             // (Opcional) limpa o campo de senha
             setSenha("");
-            // (Opcional) limpa o reCAPTCHA
-            setCaptchaToken(null);
 
             // Redireciona para a página inicial (ou, se quiser, para "/chamados")
             navigate("/");
@@ -132,17 +123,11 @@ const UsuariosFormLogin = () => {
                     />
                 </div>
 
-                {/* reCAPTCHA do Google */}
-                <div className="my-2">
-                    <ReCaptcha setCaptchaToken={setCaptchaToken} loading={loading} />
-                </div>
-
-                {/* Enquanto loading=true, desabilita o botão e mostra "Entrando…" 
-            Também desabilita se o reCAPTCHA não estiver marcado */}
+                {/* Enquanto loading=true, desabilita o botão e mostra "Entrando…" */}
                 <button
                     type="submit"
                     className="btn btn-primary"
-                    disabled={loading || !captchaToken}
+                    disabled={loading}
                 >
                     {loading ? "Entrando…" : "Entrar"}
                 </button>
