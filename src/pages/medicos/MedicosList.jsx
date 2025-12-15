@@ -100,7 +100,7 @@ const MedicosList = () => {
 									{expandedMedicoId === m.id && (
 										<tr key={`${m.id}-expanded`}>
 											<td colSpan={5}>
-												<div className="p-2 bg-dark">
+												<div className="p-2 bg-body">
 													<h6>Clínicas de {m.nome}</h6>
 													{Array.isArray(m.clinicas) && m.clinicas.length > 0 ? (
 														<div className="list-group">
