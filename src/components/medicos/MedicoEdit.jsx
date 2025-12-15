@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthFetch } from "../../auth/useAuthFetch";
 import Toast from "../shared/Toast";
+import Navbar from "../shared/Navbar";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -73,49 +74,53 @@ const MedicoEdit = () => {
 	if (loading) return <p>Carregando médico...</p>;
 
 	return (
-		<div className="container mt-3">
-			{error && <Toast error={error} setError={setError} />}
+		<div>
+			<Navbar />
 
-			<h3>Editar Médico</h3>
+			<div className="container mt-3">
+				{error && <Toast error={error} setError={setError} />}
 
-			<form onSubmit={handleSubmit} className="mt-3" style={{ maxWidth: 600 }}>
-				<div className="mb-3">
-					<label className="form-label">Nome</label>
-					<input
-						className="form-control"
-						value={nome}
-						onChange={(e) => setNome(e.target.value)}
-						required
-					/>
-				</div>
+				<h3>Editar Médico</h3>
 
-				<div className="mb-3">
-					<label className="form-label">CRM</label>
-					<input
-						className="form-control"
-						value={crm}
-						onChange={(e) => setCrm(e.target.value)}
-						required
-					/>
-				</div>
+				<form onSubmit={handleSubmit} className="mt-3" style={{ maxWidth: 600 }}>
+					<div className="mb-3">
+						<label className="form-label">Nome</label>
+						<input
+							className="form-control"
+							value={nome}
+							onChange={(e) => setNome(e.target.value)}
+							required
+						/>
+					</div>
 
-				<div className="mb-3">
-					<label className="form-label">Especialidade</label>
-					<input
-						className="form-control"
-						value={especialidade}
-						onChange={(e) => setEspecialidade(e.target.value)}
-						required
-					/>
-				</div>
+					<div className="mb-3">
+						<label className="form-label">CRM</label>
+						<input
+							className="form-control"
+							value={crm}
+							onChange={(e) => setCrm(e.target.value)}
+							required
+						/>
+					</div>
 
-				<div className="d-flex gap-2">
-					<button className="btn btn-primary" type="submit" disabled={saving}>
-						{saving ? "Salvando…" : "Salvar"}
-					</button>
-					<button className="btn btn-secondary" type="button" onClick={() => navigate("/medico")}>Cancelar</button>
-				</div>
-			</form>
+					<div className="mb-3">
+						<label className="form-label">Especialidade</label>
+						<input
+							className="form-control"
+							value={especialidade}
+							onChange={(e) => setEspecialidade(e.target.value)}
+							required
+						/>
+					</div>
+
+					<div className="d-flex gap-2">
+						<button className="btn btn-primary" type="submit" disabled={saving}>
+							{saving ? "Salvando…" : "Salvar"}
+						</button>
+						<button className="btn btn-secondary" type="button" onClick={() => navigate("/medico")}>Cancelar</button>
+					</div>
+				</form>
+			</div>
 		</div>
 	);
 };
