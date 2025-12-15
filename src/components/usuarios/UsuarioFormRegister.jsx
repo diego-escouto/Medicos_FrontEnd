@@ -130,10 +130,11 @@ const UsuariosFormRegister = () => {
                     <input
                         id="id-input-nome"
                         type="text"
+                        minLength={4}
                         className="form-control"
                         value={nome}
                         onChange={(e) => setNome(e.target.value)}
-                        required // atributo HTML: impede submit se estiver vazio
+                        required 
                         placeholder="Digite seu nome"
                     />
                 </div>
@@ -160,6 +161,7 @@ const UsuariosFormRegister = () => {
                     <input
                         id="id-input-senha"
                         type="password"
+                        minLength={8}
                         className="form-control"
                         value={senha}
                         onChange={(e) => setSenha(e.target.value)}
