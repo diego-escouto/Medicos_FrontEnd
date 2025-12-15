@@ -11,6 +11,10 @@ const MedicoCreateForm = ({ onCreated }) => {
     const [especialidade, setEspecialidade] = useState("");
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState(null);
+    const [associateClinica, setAssociateClinica] = useState(false);
+    const [razaoSocial, setRazaoSocial] = useState("");
+    const [cep, setCep] = useState("");
+    const [cnpj, setCnpj] = useState("");
 
     const navigate = useNavigate();
     const authFetch = useAuthFetch();
@@ -33,6 +37,26 @@ const MedicoCreateForm = ({ onCreated }) => {
             }
 
             const created = await res.json().catch(() => null);
+            // se usuário optou por associar/ criar uma clínica, chama endpoint de clinica
+            if (associateClinica && (razaoSocial.trim() || cep.trim() || cnpj.trim())) {
+                try {
+                    const clinicaPayload = { razaoSocial, cep, cnpj };
+                    const res2 = await authFetch(`${API_BASE_URL}/medico/${created.id}/clinica`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(clinicaPayload),
+                    });
+                    if (!res2.ok) {
+                        const body2 = await res2.json().catch(() => null);
+                        // mostra erro e interrompe a navegação para permitir correção
+                        setError(`Erro ao criar clínica: ${res2.status}. ${body2?.message ?? ""}`);
+                        return;
+                    }
+                } catch (err2) {
+                    setError(err2.message ?? String(err2));
+                    return;
+                }
+            }
             if (typeof onCreated === 'function') onCreated(created);
             navigate("/medico");
         } catch (err) {
@@ -56,6 +80,28 @@ const MedicoCreateForm = ({ onCreated }) => {
                         required
                     />
                 </div>
+
+                <div className="form-check mb-3">
+                    <input className="form-check-input" type="checkbox" id="associateClinica" checked={associateClinica} onChange={(e) => setAssociateClinica(e.target.checked)} />
+                    <label className="form-check-label" htmlFor="associateClinica">Criar e vincular uma clínica a este médico</label>
+                </div>
+
+                {associateClinica && (
+                    <div className="border rounded p-3 mb-3">
+                        <div className="mb-2">
+                            <label className="form-label">Razão Social</label>
+                            <input className="form-control" value={razaoSocial} onChange={(e) => setRazaoSocial(e.target.value)} />
+                        </div>
+                        <div className="mb-2">
+                            <label className="form-label">CEP</label>
+                            <input className="form-control" value={cep} onChange={(e) => setCep(e.target.value)} />
+                        </div>
+                        <div className="mb-2">
+                            <label className="form-label">CNPJ</label>
+                            <input className="form-control" value={cnpj} onChange={(e) => setCnpj(e.target.value)} />
+                        </div>
+                    </div>
+                )}
 
                 <div className="mb-3">
                     <label className="form-label">CRM</label>
