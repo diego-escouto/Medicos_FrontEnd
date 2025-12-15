@@ -100,8 +100,15 @@ const MedicosList = () => {
 											medico={m}
 											authFetch={authFetch}
 											API_BASE_URL={API_BASE_URL}
-											onClinicaUpdated={(updated) => {
-												setMedicos((prev) => prev.map((md) => md.id !== m.id ? md : ({ ...md, clinicas: md.clinicas.map(cl => cl.id === updated.id ? updated : cl) })));
+											onClinicaUpdated={(updated, opts) => {
+												setMedicos(prev => prev.map(md => {
+													if (md.id !== m.id) return md;
+													const clinicas = Array.isArray(md.clinicas) ? [...md.clinicas] : [];
+													if (opts && opts.created) {
+														return { ...md, clinicas: [...clinicas, updated] };
+													}
+													return { ...md, clinicas: clinicas.map(cl => cl.id === updated.id ? updated : cl) };
+												}));
 											}}
 											onError={setError}
 										/>

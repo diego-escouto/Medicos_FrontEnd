@@ -4,6 +4,8 @@ export default function MedicoClinicasPanel({ medico, authFetch, API_BASE_URL, o
 	const [editingClinicaId, setEditingClinicaId] = useState(null);
 	const [editFormData, setEditFormData] = useState({});
 	const [saving, setSaving] = useState(false);
+	const [creating, setCreating] = useState(false);
+	const [createForm, setCreateForm] = useState({ razaoSocial: '', cep: '', cnpj: '' });
 
 	const handleSave = async (c) => {
 		setSaving(true);
@@ -20,6 +22,30 @@ export default function MedicoClinicasPanel({ medico, authFetch, API_BASE_URL, o
 			const updated = await res.json();
 			if (onClinicaUpdated) onClinicaUpdated(updated);
 			setEditingClinicaId(null);
+		} catch (err) {
+			if (onError) onError(err.message ?? String(err));
+		} finally {
+			setSaving(false);
+		}
+	};
+
+	const handleCreate = async () => {
+		setSaving(true);
+		try {
+			const res = await authFetch(`${API_BASE_URL}/medico/${medico.id}/clinica`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(createForm),
+			});
+			if (!res.ok) {
+				const body = await res.json().catch(() => null);
+				throw new Error(`Erro HTTP: ${res.status}. ${body?.message ?? ''}`);
+			}
+			const created = await res.json();
+			// chama callback para que o pai atualize a lista (append)
+			if (onClinicaUpdated) onClinicaUpdated(created, { created: true });
+			setCreateForm({ razaoSocial: '', cep: '', cnpj: '' });
+			setCreating(false);
 		} catch (err) {
 			if (onError) onError(err.message ?? String(err));
 		} finally {
@@ -81,6 +107,29 @@ export default function MedicoClinicasPanel({ medico, authFetch, API_BASE_URL, o
 						</div>
 					) : (
 						<p>Nenhuma clínica associada.</p>
+					)}
+
+					{/* criação de nova clínica */}
+					{creating ? (
+						<div className="mt-3">
+							<div className="mb-2">
+								<input className="form-control form-control-sm" placeholder="Razão Social" value={createForm.razaoSocial} onChange={(e) => setCreateForm((p) => ({ ...p, razaoSocial: e.target.value }))} />
+							</div>
+							<div className="mb-2">
+								<input className="form-control form-control-sm" placeholder="CEP" value={createForm.cep} onChange={(e) => setCreateForm((p) => ({ ...p, cep: e.target.value }))} />
+							</div>
+							<div className="mb-2">
+								<input className="form-control form-control-sm" placeholder="CNPJ" value={createForm.cnpj} onChange={(e) => setCreateForm((p) => ({ ...p, cnpj: e.target.value }))} />
+							</div>
+							<div className="d-flex gap-2">
+								<button className="btn btn-sm btn-primary" disabled={saving} onClick={handleCreate}>Criar</button>
+								<button className="btn btn-sm btn-secondary" disabled={saving} onClick={() => setCreating(false)}>Cancelar</button>
+							</div>
+						</div>
+					) : (
+						<div className="mt-3">
+							<button className="btn btn-sm btn-success" onClick={() => setCreating(true)}>Adicionar Clínica</button>
+						</div>
 					)}
 				</div>
 			</td>
